@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="60" viewBox="0 0 250 60">
+    <g transform="translate(10, 5)">
+        <polygon points="0,0 40,0 20,20" fill="#FFFFFF" />
+        <polygon points="10,25 30,25 20,45" fill="#FF6B35" />
+    </g>
+
+    <text x="55" y="38" font-family="Poppins, sans-serif" font-size="22" fill="#FFFFFF">
+        <tspan font-weight="bold">Truong Thanh</tspan>
+        <tspan font-weight="400"> ERP</tspan>
+    </text>
+</svg>

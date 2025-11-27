@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="../assets/css/animate.min.css">
+    <!--=== BoxIcons CSS ===-->
+    <link rel="stylesheet" href="../assets/css/boxicons.min.css">
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
+    <!-- Owl Default CSS -->
+    <link rel="stylesheet" href="../assets/css/owl.theme.default.min.css">
+    <!-- Magnific Popup CSS -->
+    <link rel="stylesheet" href="../assets/css/magnific-popup.min.css">
+    <!-- Odometer CSS -->
+    <link rel="stylesheet" href="../assets/css/odometer.min.css">
+    <!-- Nice Select CSS -->
+    <link rel="stylesheet" href="../assets/css/nice-select.min.css">
+    <!--=== MeanMenu CSS ===-->
+    <link rel="stylesheet" href="../assets/css/meanmenu.min.css">
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Dark CSS -->
+    <link rel="stylesheet" href="../assets/css/dark.css">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+
+    <!--=== Title ===-->
+    <title>Liên Hệ - Trường Thành ERP</title>
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+</head>
+
+<body>
+
+    <!-- Start Preloader Area -->
+    <div class="preloader">
+        <div class="spinner"></div>
+    </div>
+    <!-- End Preloader Area -->
+
+    <!-- HEADER -->
+    <?php include("../includes/header.php") ?>
+    <!-- HEADER -->
+
+    <!-- Start Page Title Area -->
+    <div class="page-title-area item-bg-12">
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="container">
+                    <div class="page-title-content">
+                        <h2>Liên Hệ</h2>
+                        <ul>
+                            <li>
+                                <a href="index.html">Trang chủ</a>
+                                <i class='bx bx-right-arrow-alt'></i>
+                            </li>
+                            <li>Liên hệ</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Page Title Area -->
+
+    <!-- FOOTER -->
+    <?php include("../includes/footer.php") ?>
+    <!-- FOOTER -->
+
+
+    <!-- Start Go Top Section -->
+    <div class="go-top">
+        <i class="bx bx-chevron-up"></i>
+        <i class="bx bx-chevron-up"></i>
+    </div>
+    <!-- End Go Top Section -->
+
+    <!-- Jquery Slim JS -->
+    <script src="../assets/js/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <!--=== MeanMenu JS ===-->
+    <script src="../assets/js/jquery.meanmenu.min.js"></script>
+    <!-- Owl Carousel JS -->
+    <script src="../assets/js/owl.carousel.min.js"></script>
+    <!-- Magnific Popup JS -->
+    <script src="../assets/js/jquery.magnific-popup.min.js"></script>
+    <!-- Appear JS -->
+    <script src="../assets/js/jquery.appear.min.js"></script>
+    <!-- Odometer JS -->
+    <script src="../assets/js/odometer.min.js"></script>
+    <!--=== Form AjaxChimp JS ===-->
+    <script src="../assets/js/jquery.ajaxchimp.min.js"></script>
+    <!-- Form Validator JS -->
+    <script src="../assets/js/form-validator.min.js"></script>
+    <!-- Contact JS -->
+    <script src="../assets/js/contact-form-script.js"></script>
+    <!-- Nice Select JS -->
+    <script src="../assets/js/jquery.nice-select.min.js"></script>
+    <!-- Wow Popup JS -->
+    <script src="../assets/js/wow.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../assets/js/main.js"></script>
+</body>
+
+</html>
