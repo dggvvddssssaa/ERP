@@ -192,7 +192,7 @@
                 <div class="contact-form">
                     <h3>Gửi tin nhắn cho chúng tôi</h3>
                     <p>Để lại thông tin, chuyên viên của chúng tôi sẽ liên hệ lại với bạn trong thời gian sớm nhất.</p>
-                    <form id="contactForm">
+                    <form id="contactForm" action="../modules/contact_process.php" method="POST">
                         <div class="row">
                             <div class="col-lg-6 col-md-6">
                                 <div class="form-group">

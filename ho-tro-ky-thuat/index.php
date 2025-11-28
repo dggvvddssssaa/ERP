@@ -199,7 +199,7 @@
                             <p>Để lại thông tin, chuyên gia của chúng tôi sẽ liên hệ lại sớm nhất.</p>
                         </div>
 
-                        <form id="contactForm">
+                        <form id="contactForm" action="../modules/contact_process.php" method="POST">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6">
                                     <div class="form-group">
