@@ -85,11 +85,16 @@ $result = $conn->query($sql);
                         <div class="col-lg-4 col-md-6">
                             <div class="blog-item">
                                 <div class="image">
-                                    <a href="../xem-tin-tuc/?id=<?php echo $row['id']; ?>">
+                                    <a href="../xem-tin-tuc/?id=<?php echo $row['id']; ?>" class="d-block w-100">
                                         <?php if (!empty($row['image'])): ?>
-                                            <img src="../assets/img/blog/<?php echo $row['image']; ?>" alt="<?php echo htmlspecialchars($row['title']); ?>" style="height: 250px; object-fit: cover;">
+                                            <!-- Thêm width: 100% để ảnh tràn khung ngang -->
+                                            <img src="../assets/img/blog/<?php echo $row['image']; ?>"
+                                                alt="<?php echo htmlspecialchars($row['title']); ?>"
+                                                style="width: 100%; height: 250px; object-fit: cover;">
                                         <?php else: ?>
-                                            <img src="../assets/img/blog/default.jpg" alt="Default Image" style="height: 250px; object-fit: cover;">
+                                            <img src="../assets/img/blog/default.jpg"
+                                                alt="Default Image"
+                                                style="width: 100%; height: 250px; object-fit: cover;">
                                         <?php endif; ?>
                                     </a>
                                     <div class="btn">

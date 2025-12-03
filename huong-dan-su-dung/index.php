@@ -20,7 +20,8 @@ $cats = $conn->query("SELECT * FROM help_categories");
 $videos = $conn->query("SELECT * FROM help_items $where AND type='video' ORDER BY id DESC");
 
 // Lấy Tài liệu
-$docs = $conn->query("SELECT * FROM help_items $where AND type='document' ORDER BY id DESC");
+$sql_docs = "SELECT * FROM documents ORDER BY created_at DESC LIMIT 6";
+$result_docs = $conn->query($sql_docs);
 ?>
 
 <!DOCTYPE html>
@@ -321,33 +322,62 @@ $docs = $conn->query("SELECT * FROM help_items $where AND type='document' ORDER 
                         </div>
                     <?php endif; ?>
 
-                    <?php if ($docs->num_rows > 0): ?>
-                        <div class="section-title text-left mt-5">
-                            <h2>Tài Liệu PDF</h2>
-                            <p>Tải xuống tài liệu hướng dẫn chi tiết.</p>
-                        </div>
-                        <div class="row">
-                            <?php while ($d = $docs->fetch_assoc()): ?>
-                                <div class="col-lg-6">
-                                    <div class="doc-item">
-                                        <div class="doc-icon"><i class='bx bxs-file-pdf'></i></div>
-                                        <div class="doc-info">
-                                            <h5><?php echo htmlspecialchars($d['title']); ?></h5>
-                                            <p class="mb-2 text-muted small"><?php echo htmlspecialchars($d['description']); ?></p>
+                    <!-- Section: Tài Liệu Mới Nhất (Thay thế phần tĩnh cũ) -->
+                    <div class="row">
+                        <?php if ($result_docs && $result_docs->num_rows > 0): ?>
+                            <?php while ($doc = $result_docs->fetch_assoc()):
+                                // Xác định Icon và Màu sắc dựa trên loại file
+                                $icon_class = 'ri-file-line';
+                                $bg_class = 'icon-pdf'; // Mặc định
 
-                                            <?php
-                                            // Tài liệu luôn lưu ở file_path
-                                            $fileUrl = "../assets/uploads/help/" . $d['file_path'];
-                                            ?>
-                                            <a href="<?php echo $fileUrl; ?>" class="download-btn" download>
-                                                Tải xuống <i class='bx bx-download'></i>
-                                            </a>
+                                if ($doc['file_type'] == 'pdf') {
+                                    $icon_class = 'ri-file-pdf-line';
+                                    $bg_class = 'icon-pdf';
+                                } elseif ($doc['file_type'] == 'word') {
+                                    $icon_class = 'ri-file-word-line';
+                                    $bg_class = 'icon-word';
+                                } elseif ($doc['file_type'] == 'excel') {
+                                    $icon_class = 'ri-file-excel-line';
+                                    $bg_class = 'icon-excel';
+                                } elseif ($doc['file_type'] == 'video') {
+                                    $icon_class = 'ri-video-line';
+                                    $bg_class = 'icon-video';
+                                }
+                            ?>
+                                <div class="col-md-6">
+                                    <div class="doc-item">
+                                        <div class="doc-icon <?php echo $bg_class; ?>">
+                                            <i class="<?php echo $icon_class; ?>"></i>
+                                        </div>
+                                        <div class="w-100">
+                                            <h5 class="mb-1" style="font-size: 16px; font-weight: 700;">
+                                                <a href="#" class="text-dark text-decoration-none"><?php echo htmlspecialchars($doc['title']); ?></a>
+                                            </h5>
+                                            <p class="mb-2 text-muted small line-clamp-2"><?php echo htmlspecialchars($doc['description']); ?></p>
+                                            <div class="doc-meta">
+                                                <?php if ($doc['file_type'] == 'video'): ?>
+                                                    <span><i class="ri-time-line"></i> Video</span>
+                                                <?php else: ?>
+                                                    <span><i class="ri-file-line"></i> <?php echo $doc['file_size']; ?></span>
+                                                <?php endif; ?>
+
+                                                <span><i class="ri-download-cloud-line"></i> <?php echo $doc['download_count']; ?></span>
+
+                                                <a href="../assets/uploads/documents/<?php echo $doc['file_path']; ?>" download
+                                                    class="ms-auto text-primary text-decoration-none fw-bold">
+                                                    <?php echo ($doc['file_type'] == 'video') ? 'Xem ngay' : 'Tải về'; ?>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             <?php endwhile; ?>
-                        </div>
-                    <?php endif; ?>
+                        <?php else: ?>
+                            <div class="col-12 text-center py-4">
+                                <p>Chưa có tài liệu nào được tải lên.</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
 
                     <?php if ($videos->num_rows == 0 && $docs->num_rows == 0): ?>
                         <div class="alert alert-warning text-center">Không tìm thấy nội dung phù hợp.</div>

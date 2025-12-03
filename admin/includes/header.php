@@ -1,53 +1,28 @@
+<?php
+if (!isset($path)) $path = "/ERP/admin/";
+?>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERP Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .sidebar {
-            min-height: 100vh;
-            background: #343a40;
-            color: white;
-        }
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Volt - Premium Bootstrap 5 Dashboard</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
 
-        .sidebar a {
-            color: #cfd8dc;
-            text-decoration: none;
-            display: block;
-            padding: 10px 20px;
-        }
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
 
-        .sidebar a:hover {
-            background: #495057;
-            color: white;
-        }
-
-        .content {
-            padding: 20px;
-        }
-
-        /* Ẩn thông báo bản quyền/bảo mật của CKEditor 4 */
-        .cke_notification_warning {
-            display: none !important;
-        }
-
-        .cke_notifications_area {
-            display: none !important;
-        }
-    </style>
-
+    <!-- CSS Files -->
+    <link type="text/css" href="<?php echo $path; ?>assets/css/sweetalert2.min.css" rel="stylesheet">
+    <link type="text/css" href="<?php echo $path; ?>assets/css/notyf.min.css" rel="stylesheet">
+    <link type="text/css" href="<?php echo $path; ?>assets/css/main.min.css" rel="stylesheet">
+    <link type="text/css" href="<?php echo $path; ?>assets/css/apexcharts.css" rel="stylesheet">
+    <link type="text/css" href="<?php echo $path; ?>assets/css/dropzone.min.css" rel="stylesheet">
+    <link type="text/css" href="<?php echo $path; ?>assets/css/choices.min.css" rel="stylesheet">
+    <link type="text/css" href="<?php echo $path; ?>assets/css/leaflet.css" rel="stylesheet">
+    <link type="text/css" href="<?php echo $path; ?>assets/css/volt.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-dark bg-dark px-3">
-        <a class="navbar-brand" href="#">ERP System</a>
-        <div class="d-flex">
-            <span class="text-white me-3">Xin chào, <?php echo $_SESSION['admin_name']; ?></span>
-            <a href="logout.php" class="btn btn-sm btn-danger">Đăng xuất</a>
-        </div>
-    </nav>
-    <div class="d-flex">

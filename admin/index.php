@@ -1,98 +1,69 @@
-<?php
-session_start();
-// Kiểm tra bảo mật: Chưa đăng nhập thì đá về login
-if (!isset($_SESSION['admin_logged_in'])) {
-    header("Location: login.php");
-    exit();
-}
-
-// Kết nối database
-require_once 'config/db_connection.php';
-
-// Ví dụ: Lấy tổng số liệu (Giả sử bạn có bảng 'users')
-// Bạn có thể bỏ comment dòng dưới nếu DB đã có bảng
-// $sql = "SELECT count(*) as total FROM users";
-// $result = $conn->query($sql);
-// $row = $result->fetch_assoc();
-// $total_users = $row['total'];
-$total_users = 0; // Tạm thời để 0
-?>
-
 <?php include 'includes/header.php'; ?>
+
+<!-- Sidebar -->
 <?php include 'includes/sidebar.php'; ?>
 
-<div class="content flex-grow-1">
-    <h2 class="mb-4">Tổng quan hệ thống</h2>
+<main class="content">
+
+    <!-- Topbar -->
+    <?php include 'includes/topbar.php'; ?>
+
+    <!-- NỘI DUNG CHÍNH (DASHBOARD) -->
+    <div class="py-4">
+        <div class="dropdown">
+            <button class="btn btn-gray-800 d-inline-flex align-items-center me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg> New Task
+            </button>
+            <div class="dropdown-menu dashboard-dropdown dropdown-menu-start mt-2 py-1">
+                <a class="dropdown-item d-flex align-items-center" href="#">Add User</a>
+                <a class="dropdown-item d-flex align-items-center" href="#">Add Widget</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-lg-center">
+        <div class="col-12 mb-4">
+            <div class="card border-0 bg-yellow-100 shadow">
+                <div class="card-header d-sm-flex flex-row align-items-center border-yellow-200 flex-0">
+                    <div class="d-block mb-3 mb-sm-0">
+                        <div class="fs-5 fw-normal mb-2">Sales Value</div>
+                        <h2 class="fs-3 fw-extrabold">$10,567</h2>
+                        <div class="small mt-2">
+                            <span class="fw-normal me-2">Yesterday</span>
+                            <span class="fas fa-angle-up text-success"></span>
+                            <span class="text-success fw-bold">10.57%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-2">
+                    <div id="chart"></div> <!-- Biểu đồ -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
-        <div class="col-md-3">
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-header">Nhân sự</div>
+        <!-- Customers -->
+        <div class="col-12 col-sm-6 col-xl-4 mb-4">
+            <div class="card border-0 shadow">
                 <div class="card-body">
-                    <h5 class="card-title"><?php echo $total_users; ?> Nhân viên</h5>
-                    <p class="card-text">Tổng số nhân sự hiện tại.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-header">Doanh thu</div>
-                <div class="card-body">
-                    <h5 class="card-title">150 Triệu</h5>
-                    <p class="card-text">Doanh thu tháng này.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card text-white bg-warning mb-3">
-                <div class="card-header">Đơn hàng</div>
-                <div class="card-body">
-                    <h5 class="card-title">12 Đơn</h5>
-                    <p class="card-text">Đơn hàng chưa xử lý.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card text-white bg-danger mb-3">
-                <div class="card-header">Cảnh báo</div>
-                <div class="card-body">
-                    <h5 class="card-title">3 Lỗi</h5>
-                    <p class="card-text">Hệ thống cần kiểm tra.</p>
+                    <div class="row d-block d-xxl-flex align-items-center">
+                        <div class="col-12 col-xxl-6 px-xxl-0 mb-3 mb-xxl-0">
+                            <div id="chart-customers"></div>
+                        </div>
+                        <div class="col-12 col-xxl-6 ps-xxl-4 pe-xxl-0">
+                            <h2 class="fs-6 fw-normal mb-1 text-gray-400">Customers</h2>
+                            <h3 class="fw-extrabold mb-1">345k</h3>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="mt-4">
-        <h4>Hoạt động gần đây</h4>
-        <table class="table table-bordered table-striped bg-white">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Hoạt động</th>
-                    <th>Thời gian</th>
-                    <th>Trạng thái</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Đăng nhập hệ thống</td>
-                    <td>28/11/2025 10:00</td>
-                    <td><span class="badge bg-success">Thành công</span></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Cập nhật kho hàng</td>
-                    <td>28/11/2025 09:30</td>
-                    <td><span class="badge bg-primary">Đã lưu</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+    <!-- Footer -->
+    <?php include 'includes/footer.php'; ?>
 
-<?php include 'includes/footer.php'; ?>
+</main>

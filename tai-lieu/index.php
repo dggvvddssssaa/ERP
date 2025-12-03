@@ -5,6 +5,12 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- 1. ADD GOOGLE FONTS (Quan trọng để không lỗi font) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
     <!-- Animate CSS -->
@@ -34,24 +40,38 @@
             --bg-light: #f8f9fa;
         }
 
+        /* 2. Ép sử dụng font Roboto cho toàn trang */
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        a,
+        span,
+        div,
+        li,
+        input,
+        button {
+            font-family: 'Roboto', sans-serif !important;
+        }
+
         body {
-            font-family: "Roboto", sans-serif;
             color: var(--text-color);
             background-color: #f9f9f9;
         }
 
         /* --- FIX LỖI DROPDOWN --- */
-        /* Ép menu hiển thị khi có class .show của Bootstrap 5 */
         .dropdown-menu.show {
             display: block !important;
             opacity: 1 !important;
             visibility: visible !important;
             transform: translateY(0) !important;
             top: 100% !important;
-            /* Đẩy xuống dưới nút */
         }
 
-        /* Style cho nút Dropdown giả lập Select box */
         .filter-btn {
             background-color: #fff;
             border: 1px solid #e0e0e0;
@@ -63,12 +83,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            /* Đẩy mũi tên sang phải */
             transition: 0.3s;
             font-size: 15px;
         }
 
-        /* Đẩy mũi tên mặc định của Bootstrap sang lề phải */
         .filter-btn::after {
             margin-left: auto;
         }
@@ -82,7 +100,6 @@
             box-shadow: 0 5px 15px rgba(0, 178, 255, 0.1);
         }
 
-        /* Style cho khung menu xổ xuống */
         .filter-dropdown-menu {
             width: 100%;
             border: 1px solid #eee;
@@ -103,8 +120,6 @@
             background-color: #f0f9ff;
             color: var(--primary-color);
         }
-
-        /* --- END FIX DROPDOWN --- */
 
         /* Hero Section */
         .docs-hero {
@@ -575,8 +590,8 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <h2 class="mb-3 font-weight-bold">Không Tìm Thấy Tài Liệu Bạn Cần?</h2>
-                    <p class="mb-4 opacity-75" style="font-size: 18px;">Hãy gửi yêu cầu cho đội ngũ kỹ thuật của Trường Thành ERP. Chúng tôi sẽ hỗ trợ hoặc biên soạn tài liệu mới cho bạn.</p>
+                    <h2 class="mb-3 font-weight-bold text-white">Không Tìm Thấy Tài Liệu Bạn Cần?</h2>
+                    <p class="mb-4 opacity-75 text-white" style="font-size: 18px;">Hãy gửi yêu cầu cho đội ngũ kỹ thuật của Trường Thành ERP. Chúng tôi sẽ hỗ trợ hoặc biên soạn tài liệu mới cho bạn.</p>
                     <a href="lien-he.html" class="btn btn-light text-primary fw-bold px-4 py-3 rounded-pill">Yêu Cầu Tài Liệu Mới</a>
                 </div>
             </div>

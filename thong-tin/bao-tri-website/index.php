@@ -5,67 +5,150 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css" />
-    <!-- Animate CSS -->
-    <link rel="stylesheet" href="../../assets/css/animate.min.css" />
-    <!--=== BoxIcons CSS ===-->
-    <link rel="stylesheet" href="../../assets/css/boxicons.min.css" />
-    <!--=== RemixIcon CSS (Để giữ icon từ bản thiết kế gốc) ===-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
 
-    <!-- Owl Carousel CSS -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Libraries -->
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../assets/css/animate.min.css" />
+    <link rel="stylesheet" href="../../assets/css/boxicons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
     <link rel="stylesheet" href="../../assets/css/owl.carousel.min.css" />
-    <!-- Owl Default CSS -->
     <link rel="stylesheet" href="../../assets/css/owl.theme.default.min.css" />
-    <!-- Style CSS -->
+
+    <!-- Main Style -->
     <link rel="stylesheet" href="../../assets/css/style.css" />
-    <!-- Responsive CSS -->
     <link rel="stylesheet" href="../../assets/css/responsive.css" />
 
     <title>Bảo Hành & Bảo Trì Hệ Thống - Trường Thành ERP</title>
     <link rel="icon" type="image/png" href="https://truongthanherp.com/wp-content/uploads/2021/10/favicon.png" />
 
     <style>
-        /* CSS Custom */
+        /* =========================================
+           1. CẤU HÌNH CHUNG (GLOBAL)
+           ========================================= */
         :root {
             --primary-color: #00B2FF;
             --text-color: #333;
             --bg-light: #f8f9fa;
+            --bg-blue-light: #f4f7fa;
         }
 
         body {
-            font-family: "Roboto", sans-serif;
+            font-family: "Roboto", sans-serif !important;
             color: var(--text-color);
             line-height: 1.7;
+            background-color: #fff;
         }
 
-        /* Page Title Area (Hero Section) */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: "Roboto", sans-serif !important;
+        }
+
+        /* =========================================
+           2. FORM & INPUT STYLES (ĐÃ SỬA LỖI)
+           ========================================= */
+
+        /* Style chung cho Input và Select */
+        .form-control,
+        .form-select {
+            padding: 12px 15px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            color: #495057;
+            font-size: 0.95rem;
+        }
+
+        .input-group-text {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            border-color: #ced4da;
+        }
+
+        /* Hiệu ứng Focus (Bấm vào đổi màu xanh) */
+        .form-control:focus,
+        .form-select:focus {
+            box-shadow: none;
+            border-color: var(--primary-color);
+            background-color: #fff !important;
+        }
+
+        /* Khi input focus thì icon bên cạnh cũng đổi màu */
+        .input-group:focus-within .input-group-text,
+        .input-group:focus-within .form-control,
+        .input-group:focus-within .form-select {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background-color: #fff !important;
+        }
+
+        /* --- KHẮC PHỤC LỖI SELECT BOX (QUAN TRỌNG) --- */
+        /* 1. Ẩn giao diện lỗi của Nice Select */
+        .register-form .nice-select {
+            display: none !important;
+        }
+
+        /* 2. Ép hiển thị Select chuẩn của Bootstrap và chỉnh layout Flex */
+        .register-form select.form-select {
+            display: block !important;
+            /* Flex: Tự động co giãn lấp đầy khoảng trống còn lại */
+            flex: 1 1 auto !important;
+            width: 1% !important;
+            /* Mẹo của Bootstrap để input nằm ngang hàng với icon */
+
+            height: auto !important;
+            padding: 12px 15px !important;
+            border: 1px solid #ced4da;
+            border-left: 0;
+            background-color: #f8f9fa !important;
+            border-radius: 0 0.25rem 0.25rem 0 !important;
+            color: #495057;
+            appearance: none;
+            /* Xóa style mặc định */
+
+            /* Tự vẽ mũi tên xuống */
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 1rem center !important;
+            background-size: 16px 12px !important;
+        }
+
+        /* =========================================
+           3. CÁC SECTION TRONG TRANG
+           ========================================= */
+
+        /* --- Hero Section --- */
         .page-title-area {
             padding-top: 150px;
             padding-bottom: 80px;
             background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             text-align: center;
-            position: relative;
             overflow: hidden;
         }
 
         .page-title-area h1 {
             font-size: 42px;
-            font-weight: 600;
-            font-family: Arial, sans-serif;
-            color: #ffffffff;
+            font-weight: 700;
+            color: #0e1b29;
             margin-bottom: 20px;
         }
 
         .page-title-area p {
             font-size: 18px;
-            color: #ffffffff;
+            color: #555;
             max-width: 700px;
             margin: 0 auto 30px;
         }
 
-        /* Feature/Benefit Box */
+        /* --- Benefit Box --- */
         .benefit-box {
             background: #fff;
             padding: 30px;
@@ -95,7 +178,7 @@
             margin-bottom: 20px;
         }
 
-        /* Service Card */
+        /* --- Service Card --- */
         .service-card {
             background: #fff;
             border-radius: 10px;
@@ -131,7 +214,7 @@
             padding: 25px;
         }
 
-        /* Pricing Table */
+        /* --- Pricing Card --- */
         .pricing-card {
             background: #fff;
             border: 1px solid #eee;
@@ -183,7 +266,12 @@
             margin-top: 3px;
         }
 
-        /* Comparison Table */
+        /* --- Comparison Table --- */
+        .table-responsive {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
         .table thead th {
             background-color: #f8f9fa;
             border-bottom: 2px solid #dee2e6;
@@ -196,7 +284,7 @@
             vertical-align: middle;
         }
 
-        /* Process Steps */
+        /* --- Process Steps --- */
         .process-step-box {
             background: #fff;
             padding: 30px;
@@ -226,33 +314,28 @@
             font-weight: 700;
         }
 
-        /* FAQ Accordion */
-        .accordion-button:not(.collapsed) {
-            color: var(--primary-color);
-            background-color: #f0f9ff;
-            box-shadow: none;
-        }
-
-        .accordion-button:focus {
-            box-shadow: none;
-            border-color: rgba(0, 0, 0, .125);
-        }
-
-        /* Register Form */
+        /* --- Register Form Section --- */
         .register-section {
-            background-color: #fff;
+            background-color: var(--bg-blue-light);
             padding: 80px 0;
         }
 
-        .form-control {
-            padding: 12px 15px;
-            border-radius: 5px;
-            border: 1px solid #e0e0e0;
+        .register-form {
+            border-top: 5px solid var(--primary-color);
+            transition: transform 0.3s ease;
         }
 
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: none;
+        .register-form:hover {
+            transform: translateY(-5px);
+        }
+
+        .hover-up {
+            transition: all 0.3s ease;
+        }
+
+        .hover-up:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
         }
     </style>
 </head>
@@ -557,53 +640,111 @@
     </section>
 
     <!-- Start Register Form -->
-    <section id="register" class="register-section">
+    <section id="register" class="register-section ptb-100 bg-light-blue">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-5">
-                    <h2>Đăng Ký Dịch Vụ</h2>
-                    <p class="mb-4">Để lại thông tin, chuyên gia của Trường Thành ERP sẽ liên hệ tư vấn gói dịch vụ phù hợp nhất cho bạn trong vòng 24h.</p>
-                    <ul class="list-unstyled">
-                        <li class="mb-3"><i class="ri-shield-check-line text-primary me-2"></i> Bảo vệ tài sản số của doanh nghiệp</li>
-                        <li class="mb-3"><i class="ri-customer-service-2-line text-primary me-2"></i> Hỗ trợ chuyên nghiệp, tận tâm</li>
-                        <li class="mb-3"><i class="ri-line-chart-line text-primary me-2"></i> Tăng hiệu suất kinh doanh</li>
-                    </ul>
+                <!-- Phần nội dung bên trái -->
+                <div class="col-lg-5 mb-4 mb-lg-0">
+                    <div class="register-content pe-lg-4">
+                        <span class="sub-title text-primary fw-bold text-uppercase">Đăng ký ngay</span>
+                        <h2 class="mb-4 display-6 fw-bold">Tư Vấn Giải Pháp ERP Tối Ưu Cho Doanh Nghiệp</h2>
+                        <p class="mb-4 text-muted">
+                            Để lại thông tin, chuyên gia của Trường Thành ERP sẽ liên hệ tư vấn gói dịch vụ phù hợp nhất cho mô hình kinh doanh của bạn trong vòng 24h.
+                        </p>
+
+                        <div class="features-list">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="icon-box bg-white text-primary shadow-sm rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="ri-shield-check-line"></i>
+                                </div>
+                                <span>Bảo mật dữ liệu tuyệt đối</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="icon-box bg-white text-primary shadow-sm rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="ri-customer-service-2-line"></i>
+                                </div>
+                                <span>Hỗ trợ kỹ thuật 24/7</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="icon-box bg-white text-primary shadow-sm rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                    <i class="ri-line-chart-line"></i>
+                                </div>
+                                <span>Tối ưu quy trình vận hành</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Phần Form bên phải -->
                 <div class="col-lg-7">
-                    <div class="bg-light p-4 p-md-5 rounded shadow-sm">
-                        <form id="registerForm">
+                    <div class="register-form bg-white p-4 p-md-5 rounded-4 shadow-lg">
+                        <div class="text-center mb-4">
+                            <h3 class="fw-bold">Điền thông tin đăng ký</h3>
+                            <p class="text-muted small">Chúng tôi cam kết bảo mật thông tin của bạn.</p>
+                        </div>
+
+                        <!-- ACTION: Trỏ đến file PHP xử lý của bạn -->
+                        <form action="../../modules/contact_process.php" method="POST">
                             <div class="row">
+                                <!-- Họ tên -->
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="name" required placeholder="Nhập họ tên">
+                                    <label class="form-label fw-bold small">Họ và tên <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0"><i class="ri-user-line"></i></span>
+                                        <input type="text" class="form-control bg-light border-start-0 ps-0" name="name" required placeholder="Nguyễn Văn A">
+                                    </div>
                                 </div>
+
+                                <!-- Số điện thoại (Name khớp với PHP: phone_number) -->
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Số điện thoại <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="phone" required placeholder="Nhập SĐT">
+                                    <label class="form-label fw-bold small">Số điện thoại <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0"><i class="ri-phone-line"></i></span>
+                                        <input type="tel" class="form-control bg-light border-start-0 ps-0" name="phone_number" required placeholder="0912 xxx xxx">
+                                    </div>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Email <span class="text-danger">*</span></label>
-                                    <input type="email" class="form-control" name="email" required placeholder="Nhập email">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Website/Hệ thống</label>
-                                    <input type="text" class="form-control" name="website" placeholder="domain.com">
-                                </div>
+
+                                <!-- Email -->
                                 <div class="col-12 mb-3">
-                                    <label class="form-label">Gói quan tâm</label>
-                                    <select class="form-select" name="package">
-                                        <option value="basic">Gói Cơ Bản</option>
-                                        <option value="standard" selected>Gói Tiêu Chuẩn</option>
-                                        <option value="premium">Gói Cao Cấp</option>
-                                        <option value="custom">Cần tư vấn thêm</option>
-                                    </select>
+                                    <label class="form-label fw-bold small">Email công việc <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0"><i class="ri-mail-line"></i></span>
+                                        <input type="email" class="form-control bg-light border-start-0 ps-0" name="email" required placeholder="email@company.com">
+                                    </div>
                                 </div>
+
+                                <!-- Dịch vụ quan tâm (Name khớp với PHP: msg_subject) -->
                                 <div class="col-12 mb-3">
-                                    <label class="form-label">Ghi chú thêm</label>
-                                    <textarea class="form-control" rows="3" name="message" placeholder="Nội dung yêu cầu..."></textarea>
+                                    <label class="form-label fw-bold small">Dịch vụ quan tâm</label>
+                                    <div class="input-group">
+                                        <!-- Icon -->
+                                        <span class="input-group-text bg-light border-end-0"><i class="ri-stack-line"></i></span>
+
+                                        <!-- Select Box (Đã thêm class để CSS target trúng) -->
+                                        <select class="form-select bg-light border-start-0 ps-0" name="msg_subject">
+                                            <option value="Tư vấn tổng quan">-- Chọn gói dịch vụ --</option>
+                                            <option value="Gói Cơ Bản (Basic)">Gói Cơ Bản (Basic)</option>
+                                            <option value="Gói Tiêu Chuẩn (Standard)" selected>Gói Tiêu Chuẩn (Standard)</option>
+                                            <option value="Gói Cao Cấp (Premium)">Gói Cao Cấp (Premium)</option>
+                                            <option value="Tư vấn giải pháp riêng">Cần tư vấn giải pháp riêng</option>
+                                        </select>
+                                    </div>
                                 </div>
+
+                                <!-- Tin nhắn -->
+                                <div class="col-12 mb-4">
+                                    <label class="form-label fw-bold small">Nội dung yêu cầu</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 pt-2 align-items-start"><i class="ri-chat-1-line"></i></span>
+                                        <textarea class="form-control bg-light border-start-0 ps-0" rows="3" name="message" placeholder="Mô tả nhu cầu của doanh nghiệp bạn..."></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Button -->
                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-primary w-100 py-2">Đăng Ký Ngay</button>
+                                    <button type="submit" class="btn btn-primary w-100 py-3 fw-bold text-uppercase rounded-pill shadow-sm hover-up">
+                                        <i class="ri-send-plane-fill me-2"></i> Gửi Đăng Ký Ngay
+                                    </button>
                                 </div>
                             </div>
                         </form>
