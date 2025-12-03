@@ -1,3 +1,50 @@
+<?php
+// 1. KẾT NỐI DATABASE
+// Lưu ý: Kiểm tra lại đường dẫn file kết nối DB của bạn. 
+// Dựa trên code mẫu bạn gửi, tôi dùng đường dẫn tương đối này:
+require_once '../admin/config/db_connection.php';
+
+// Cấu hình đường dẫn thư mục chứa file upload
+$upload_dir = '../assets/uploads/documents/';
+
+// 2. XỬ LÝ LỌC VÀ TÌM KIẾM
+$where = "WHERE 1=1";
+
+// Tìm kiếm từ khóa
+$search_query = "";
+if (isset($_GET['q']) && !empty($_GET['q'])) {
+    $search_query = $conn->real_escape_string($_GET['q']);
+    $where .= " AND (title LIKE '%$search_query%' OR description LIKE '%$search_query%')";
+}
+
+// Lọc theo loại file (file_type)
+$type_filter = "";
+if (isset($_GET['type']) && !empty($_GET['type'])) {
+    $type_filter = $conn->real_escape_string($_GET['type']);
+    // Kiểm tra các giá trị hợp lệ
+    if (in_array($type_filter, ['pdf', 'word', 'excel', 'video'])) {
+        $where .= " AND file_type = '$type_filter'";
+    }
+}
+
+// 3. XỬ LÝ PHÂN TRANG
+$limit = 10; // Số tài liệu trên mỗi trang
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+if ($page < 1) $page = 1;
+$offset = ($page - 1) * $limit;
+
+// Đếm tổng số bản ghi để chia trang
+$sql_count = "SELECT COUNT(*) as total FROM documents $where";
+$result_count = $conn->query($sql_count);
+$row_count = $result_count->fetch_assoc();
+$total_records = $row_count['total'];
+$total_pages = ceil($total_records / $limit);
+
+// 4. LẤY DỮ LIỆU TÀI LIỆU
+$sql = "SELECT * FROM documents $where ORDER BY created_at DESC LIMIT $offset, $limit";
+$result = $conn->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -6,7 +53,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <!-- 1. ADD GOOGLE FONTS (Quan trọng để không lỗi font) -->
+    <!-- 1. ADD GOOGLE FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -33,14 +80,13 @@
     <link rel="icon" type="image/png" href="https://truongthanherp.com/wp-content/uploads/2021/10/favicon.png" />
 
     <style>
-        /* CSS Custom */
+        /* CSS Custom - Giữ nguyên của bạn */
         :root {
             --primary-color: #00B2FF;
             --text-color: #333;
             --bg-light: #f8f9fa;
         }
 
-        /* 2. Ép sử dụng font Roboto cho toàn trang */
         body,
         h1,
         h2,
@@ -306,11 +352,9 @@
     <div class="preloader">
         <div class="spinner"></div>
     </div>
-    <!-- End Preloader Area -->
 
     <!-- HEADER -->
     <?php include("../includes/header.php") ?>
-    <!-- HEADER -->
 
     <!-- Start Hero Search Section -->
     <section class="docs-hero">
@@ -318,27 +362,39 @@
             <h1 class="mb-3" style="font-weight: 800; color: #0e1b29;">Kho Tài Liệu & Hướng Dẫn</h1>
             <p class="mb-4 text-muted" style="font-size: 18px;">Tìm kiếm tài liệu hướng dẫn sử dụng ERP, CRM và các giải pháp kỹ thuật.</p>
 
-            <form class="docs-search-box mb-5">
-                <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm (VD: Hướng dẫn bán hàng...)">
+            <form action="" method="GET" class="docs-search-box mb-5">
+                <input type="text" name="q" class="form-control" placeholder="Nhập từ khóa tìm kiếm..." value="<?php echo htmlspecialchars($search_query); ?>">
+                <!-- Giữ lại filter type nếu đang chọn khi search -->
+                <?php if ($type_filter): ?>
+                    <input type="hidden" name="type" value="<?php echo $type_filter; ?>">
+                <?php endif; ?>
                 <button type="submit"><i class="ri-search-line"></i></button>
             </form>
 
-            <!-- Filter Area (Fixed Dropdown) -->
+            <!-- Filter Area -->
             <div class="row g-3 justify-content-center">
+
+                <!-- Loại Filter (Cập nhật link PHP) -->
                 <div class="col-lg-3 col-md-4">
                     <div class="dropdown">
                         <button class="btn filter-btn dropdown-toggle" type="button" id="typeFilter" data-bs-toggle="dropdown" aria-expanded="false">
-                            Tất cả loại
+                            <?php
+                            if ($type_filter == 'pdf') echo 'Tài liệu PDF';
+                            elseif ($type_filter == 'video') echo 'Video Training';
+                            else echo 'Tất cả loại';
+                            ?>
                         </button>
                         <ul class="dropdown-menu filter-dropdown-menu" aria-labelledby="typeFilter">
-                            <li><a class="dropdown-item" href="#">Tất cả loại</a></li>
-                            <li><a class="dropdown-item" href="#">Hướng dẫn sử dụng</a></li>
-                            <li><a class="dropdown-item" href="#">Tài liệu kỹ thuật</a></li>
-                            <li><a class="dropdown-item" href="#">Video Training</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo http_build_query(array_merge($_GET, ['type' => ''])); ?>">Tất cả loại</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo http_build_query(array_merge($_GET, ['type' => 'pdf'])); ?>">Tài liệu PDF</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo http_build_query(array_merge($_GET, ['type' => 'word'])); ?>">Tài liệu Word</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo http_build_query(array_merge($_GET, ['type' => 'excel'])); ?>">Tài liệu Excel</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo http_build_query(array_merge($_GET, ['type' => 'video'])); ?>">Video Training</a></li>
                         </ul>
                     </div>
                 </div>
 
+                <!-- Chủ đề Filter (Giữ giao diện, chưa có logic vì DB thiếu cột category) -->
                 <div class="col-lg-3 col-md-4">
                     <div class="dropdown">
                         <button class="btn filter-btn dropdown-toggle" type="button" id="topicFilter" data-bs-toggle="dropdown" aria-expanded="false">
@@ -353,22 +409,8 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-md-4">
-                    <div class="dropdown">
-                        <button class="btn filter-btn dropdown-toggle" type="button" id="formatFilter" data-bs-toggle="dropdown" aria-expanded="false">
-                            Định dạng
-                        </button>
-                        <ul class="dropdown-menu filter-dropdown-menu" aria-labelledby="formatFilter">
-                            <li><a class="dropdown-item" href="#">Tất cả</a></li>
-                            <li><a class="dropdown-item" href="#">PDF</a></li>
-                            <li><a class="dropdown-item" href="#">Word/Excel</a></li>
-                            <li><a class="dropdown-item" href="#">Video</a></li>
-                        </ul>
-                    </div>
-                </div>
-
                 <div class="col-lg-2 col-md-12 d-flex align-items-center justify-content-center justify-content-lg-start">
-                    <a href="#" class="text-muted text-decoration-none small mt-2 mt-lg-0"><i class="ri-refresh-line me-1"></i> Xóa bộ lọc</a>
+                    <a href="?" class="text-muted text-decoration-none small mt-2 mt-lg-0"><i class="ri-refresh-line me-1"></i> Xóa bộ lọc</a>
                 </div>
             </div>
         </div>
@@ -379,47 +421,29 @@
     <section class="docs-area pt-5 pb-100">
         <div class="container">
             <div class="row">
-                <!-- Left Sidebar -->
+                <!-- Left Sidebar (Giữ tĩnh để giữ UI) -->
                 <div class="col-lg-3">
-                    <!-- Categories -->
                     <div class="sidebar-box">
                         <h4 class="mb-3" style="font-size: 18px; font-weight: 700;">Danh Mục</h4>
                         <div class="cat-list">
-                            <a href="#" class="active">
+                            <a href="?" class="active">
                                 <span><i class="ri-folder-line me-2"></i> Tất cả tài liệu</span>
-                                <span class="cat-badge">42</span>
                             </a>
                             <a href="#">
                                 <span><i class="ri-book-mark-line me-2"></i> Hướng dẫn ERP</span>
-                                <span class="cat-badge">18</span>
-                            </a>
-                            <a href="#">
-                                <span><i class="ri-user-settings-line me-2"></i> Quản trị hệ thống</span>
-                                <span class="cat-badge">12</span>
-                            </a>
-                            <a href="#">
-                                <span><i class="ri-code-s-slash-line me-2"></i> API & Kỹ thuật</span>
-                                <span class="cat-badge">8</span>
                             </a>
                             <a href="#">
                                 <span><i class="ri-video-line me-2"></i> Video Training</span>
-                                <span class="cat-badge">4</span>
                             </a>
                         </div>
                     </div>
 
-                    <!-- Tags -->
                     <div class="sidebar-box">
                         <h4 class="mb-3" style="font-size: 18px; font-weight: 700;">Tags Phổ Biến</h4>
                         <div class="tag-cloud">
                             <a href="#">Kế toán</a>
                             <a href="#">Bán hàng</a>
                             <a href="#">Kho vận</a>
-                            <a href="#">HRM</a>
-                            <a href="#">CRM</a>
-                            <a href="#">Báo cáo</a>
-                            <a href="#">Bảo mật</a>
-                            <a href="#">API</a>
                         </div>
                     </div>
                 </div>
@@ -427,157 +451,111 @@
                 <!-- Right Content -->
                 <div class="col-lg-9">
 
-                    <!-- Section: Tài Liệu Mới -->
+                    <!-- Title Section -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h3 style="font-size: 24px; font-weight: 700;">Tài Liệu Mới Nhất</h3>
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                Mới nhất
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Mới nhất</a></li>
-                                <li><a class="dropdown-item" href="#">Tải nhiều nhất</a></li>
-                            </ul>
-                        </div>
+                        <h3 style="font-size: 24px; font-weight: 700;">
+                            <?php echo (!empty($search_query)) ? "Kết quả tìm kiếm: \"$search_query\"" : "Tài Liệu Mới Nhất"; ?>
+                        </h3>
+                        <div class="text-muted">Tổng: <?php echo $total_records; ?> tài liệu</div>
                     </div>
 
                     <div class="row">
-                        <!-- Item 1 -->
-                        <div class="col-md-6">
-                            <div class="doc-item">
-                                <div class="doc-icon icon-pdf">
-                                    <i class="ri-file-pdf-line"></i>
-                                </div>
-                                <div class="w-100">
-                                    <h5 class="mb-1" style="font-size: 16px; font-weight: 700;">
-                                        <a href="#" class="text-dark text-decoration-none">Hướng dẫn phân hệ Kế toán</a>
-                                    </h5>
-                                    <p class="mb-2 text-muted small line-clamp-2">Tài liệu hướng dẫn chi tiết các nghiệp vụ kế toán trên hệ thống ERP.</p>
-                                    <div class="doc-meta">
-                                        <span><i class="ri-pages-line"></i> 45 trang</span>
-                                        <span><i class="ri-download-cloud-line"></i> 1.2K</span>
-                                        <a href="#" class="ms-auto text-primary text-decoration-none fw-bold">Tải về</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- LOOP PHP HIỂN THỊ TÀI LIỆU -->
+                        <?php if ($result->num_rows > 0): ?>
+                            <?php while ($row = $result->fetch_assoc()): ?>
+                                <?php
+                                // Xử lý logic icon và màu sắc dựa trên file_type từ DB
+                                $icon_class = 'ri-file-line';
+                                $bg_class = 'icon-pdf';
+                                $btn_text = 'Tải về';
 
-                        <!-- Item 2 -->
-                        <div class="col-md-6">
-                            <div class="doc-item">
-                                <div class="doc-icon icon-video">
-                                    <i class="ri-video-line"></i>
-                                </div>
-                                <div class="w-100">
-                                    <h5 class="mb-1" style="font-size: 16px; font-weight: 700;">
-                                        <a href="#" class="text-dark text-decoration-none">Video: Quy trình Nhập - Xuất kho</a>
-                                    </h5>
-                                    <p class="mb-2 text-muted small line-clamp-2">Hướng dẫn thao tác nhập kho, luân chuyển kho và xử lý kiểm kê.</p>
-                                    <div class="doc-meta">
-                                        <span><i class="ri-time-line"></i> 15 phút</span>
-                                        <span><i class="ri-eye-line"></i> 850</span>
-                                        <a href="#" class="ms-auto text-primary text-decoration-none fw-bold">Xem ngay</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                // Chuyển về chữ thường để so sánh
+                                $f_type = strtolower($row['file_type']);
 
-                        <!-- Item 3 -->
-                        <div class="col-md-6">
-                            <div class="doc-item">
-                                <div class="doc-icon icon-excel">
-                                    <i class="ri-file-excel-line"></i>
-                                </div>
-                                <div class="w-100">
-                                    <h5 class="mb-1" style="font-size: 16px; font-weight: 700;">
-                                        <a href="#" class="text-dark text-decoration-none">Template Import Khách hàng (CRM)</a>
-                                    </h5>
-                                    <p class="mb-2 text-muted small line-clamp-2">File mẫu Excel import dữ liệu khách hàng hàng loạt.</p>
-                                    <div class="doc-meta">
-                                        <span><i class="ri-file-line"></i> 50KB</span>
-                                        <span><i class="ri-download-cloud-line"></i> 2.5K</span>
-                                        <a href="#" class="ms-auto text-primary text-decoration-none fw-bold">Tải về</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                if (strpos($f_type, 'pdf') !== false) {
+                                    $icon_class = 'ri-file-pdf-line';
+                                    $bg_class = 'icon-pdf';
+                                } elseif (strpos($f_type, 'word') !== false) {
+                                    $icon_class = 'ri-file-word-line';
+                                    $bg_class = 'icon-word';
+                                } elseif (strpos($f_type, 'excel') !== false) {
+                                    $icon_class = 'ri-file-excel-line';
+                                    $bg_class = 'icon-excel';
+                                } elseif (strpos($f_type, 'video') !== false) {
+                                    $icon_class = 'ri-video-line';
+                                    $bg_class = 'icon-video';
+                                    $btn_text = 'Xem ngay';
+                                }
+                                ?>
+                                <div class="col-md-6">
+                                    <div class="doc-item">
+                                        <div class="doc-icon <?php echo $bg_class; ?>">
+                                            <i class="<?php echo $icon_class; ?>"></i>
+                                        </div>
+                                        <div class="w-100">
+                                            <h5 class="mb-1" style="font-size: 16px; font-weight: 700;">
+                                                <a href="#" class="text-dark text-decoration-none"><?php echo htmlspecialchars($row['title']); ?></a>
+                                            </h5>
+                                            <p class="mb-2 text-muted small line-clamp-2">
+                                                <?php echo htmlspecialchars($row['description']); ?>
+                                            </p>
+                                            <div class="doc-meta">
+                                                <?php if ($f_type == 'video'): ?>
+                                                    <span><i class="ri-time-line"></i> Video</span>
+                                                <?php else: ?>
+                                                    <span><i class="ri-pages-line"></i> <?php echo htmlspecialchars($row['file_size']); ?></span>
+                                                <?php endif; ?>
 
-                        <!-- Item 4 -->
-                        <div class="col-md-6">
-                            <div class="doc-item">
-                                <div class="doc-icon icon-word">
-                                    <i class="ri-file-word-line"></i>
-                                </div>
-                                <div class="w-100">
-                                    <h5 class="mb-1" style="font-size: 16px; font-weight: 700;">
-                                        <a href="#" class="text-dark text-decoration-none">Tài liệu tích hợp API Hóa đơn điện tử</a>
-                                    </h5>
-                                    <p class="mb-2 text-muted small line-clamp-2">Hướng dẫn kỹ thuật kết nối ERP với nhà cung cấp hóa đơn điện tử.</p>
-                                    <div class="doc-meta">
-                                        <span><i class="ri-pages-line"></i> 20 trang</span>
-                                        <span><i class="ri-download-cloud-line"></i> 400</span>
-                                        <a href="#" class="ms-auto text-primary text-decoration-none fw-bold">Tải về</a>
+                                                <span><i class="ri-download-cloud-line"></i> <?php echo $row['download_count']; ?></span>
+
+                                                <!-- Link tải về -->
+                                                <a href="<?php echo $upload_dir . $row['file_path']; ?>" target="_blank" class="ms-auto text-primary text-decoration-none fw-bold">
+                                                    <?php echo $btn_text; ?>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <div class="col-12 text-center py-5">
+                                <img src="https://cdni.iconscout.com/illustration/premium/thumb/empty-state-2130362-1800926.png" alt="No data" style="width: 200px; opacity: 0.7">
+                                <p class="mt-3 text-muted">Không tìm thấy tài liệu nào phù hợp.</p>
                             </div>
-                        </div>
+                        <?php endif; ?>
                     </div>
 
-                    <!-- Section: Hướng Dẫn Quản Trị -->
-                    <div class="mt-4">
-                        <h3 class="mb-4" style="font-size: 24px; font-weight: 700;">Hướng Dẫn Quản Trị Hệ Thống</h3>
+                    <!-- Pagination PHP -->
+                    <?php if ($total_pages > 1): ?>
+                        <div class="mt-5">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                    <!-- Nút Previous -->
+                                    <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
+                                        <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page - 1])); ?>">
+                                            <i class="ri-arrow-left-s-line"></i>
+                                        </a>
+                                    </li>
 
-                        <div class="doc-item">
-                            <div class="doc-icon icon-pdf">
-                                <i class="ri-shield-keyhole-line"></i>
-                            </div>
-                            <div class="w-100">
-                                <div class="d-flex justify-content-between">
-                                    <h5 class="mb-1" style="font-size: 16px; font-weight: 700;">Phân quyền người dùng (User Roles)</h5>
-                                    <span class="badge bg-light text-dark border">PDF</span>
-                                </div>
-                                <p class="mb-2 text-muted small">Cách tạo nhóm quyền, phân quyền chi tiết từng chức năng.</p>
-                                <div class="doc-meta">
-                                    <span><i class="ri-calendar-line"></i> 20/06/2025</span>
-                                    <a href="#" class="ms-auto text-primary text-decoration-none fw-bold">Xem chi tiết</a>
-                                </div>
-                            </div>
+                                    <!-- Số trang -->
+                                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                        <li class="page-item <?php if ($page == $i) echo 'active'; ?>">
+                                            <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page' => $i])); ?>">
+                                                <?php echo $i; ?>
+                                            </a>
+                                        </li>
+                                    <?php endfor; ?>
+
+                                    <!-- Nút Next -->
+                                    <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
+                                        <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page + 1])); ?>">
+                                            <i class="ri-arrow-right-s-line"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
-
-                        <div class="doc-item">
-                            <div class="doc-icon icon-pdf">
-                                <i class="ri-settings-3-line"></i>
-                            </div>
-                            <div class="w-100">
-                                <div class="d-flex justify-content-between">
-                                    <h5 class="mb-1" style="font-size: 16px; font-weight: 700;">Cấu hình quy trình duyệt (Approval)</h5>
-                                    <span class="badge bg-light text-dark border">PDF</span>
-                                </div>
-                                <p class="mb-2 text-muted small">Hướng dẫn thiết lập quy trình phê duyệt đa cấp cho đơn hàng, đề xuất.</p>
-                                <div class="doc-meta">
-                                    <span><i class="ri-calendar-line"></i> 18/06/2025</span>
-                                    <a href="#" class="ms-auto text-primary text-decoration-none fw-bold">Xem chi tiết</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pagination -->
-                    <div class="mt-5">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1"><i class="ri-arrow-left-s-line"></i></a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#"><i class="ri-arrow-right-s-line"></i></a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
+                    <?php endif; ?>
 
                 </div>
             </div>
@@ -597,44 +575,29 @@
             </div>
         </div>
     </section>
-    <!-- End Request Section -->
 
     <!-- FOOTER -->
     <?php include("../includes/footer.php") ?>
-    <!-- FOOTER -->
 
     <!-- Start Go Top Section -->
     <div class="go-top">
         <i class="bx bx-chevron-up"></i>
         <i class="bx bx-chevron-up"></i>
     </div>
-    <!-- End Go Top Section -->
 
-    <!-- Jquery Slim JS -->
+    <!-- Scripts -->
     <script src="../assets/js/jquery.min.js"></script>
-    <!-- Bootstrap JS (Bundle include Popper for Dropdown) -->
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
-    <!--=== MeanMenu JS ===-->
     <script src="../assets/js/jquery.meanmenu.min.js"></script>
-    <!-- Owl Carousel JS -->
     <script src="../assets/js/owl.carousel.min.js"></script>
-    <!-- Magnific Popup JS -->
     <script src="../assets/js/jquery.magnific-popup.min.js"></script>
-    <!-- Appear JS -->
     <script src="../assets/js/jquery.appear.min.js"></script>
-    <!-- Odometer JS -->
     <script src="../assets/js/odometer.min.js"></script>
-    <!--=== Form AjaxChimp JS ===-->
     <script src="../assets/js/jquery.ajaxchimp.min.js"></script>
-    <!-- Form Validator JS -->
     <script src="../assets/js/form-validator.min.js"></script>
-    <!-- Contact JS -->
     <script src="../assets/js/contact-form-script.js"></script>
-    <!-- Nice Select JS -->
     <script src="../assets/js/jquery.nice-select.min.js"></script>
-    <!-- Wow Popup JS -->
     <script src="../assets/js/wow.min.js"></script>
-    <!-- Custom JS -->
     <script src="../assets/js/main.js"></script>
 </body>
 

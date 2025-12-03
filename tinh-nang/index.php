@@ -418,7 +418,123 @@
         </div>
     </section>
     <!-- End Features Details Area -->
+    <!-- 1. SECTION GIỚI THIỆU KPI (Dùng ảnh KPI của bạn) -->
+    <section class="overview-area ptb-100">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="overview-image">
+                        <!-- Ảnh KPI bạn cung cấp -->
+                        <img src="../assets/img/tinhnangkpi.png" alt="Giao diện Quản lý KPI">
+                    </div>
+                </div>
 
+                <div class="col-lg-6">
+                    <div class="overview-content">
+                        <h2>Quản Lý KPI & Hiệu Suất Chuyên Sâu</h2>
+                        <p>Hệ thống Dashboard trực quan giúp Ban lãnh đạo nắm bắt "sức khỏe" doanh nghiệp tức thì thông qua các chỉ số hiệu suất trọng yếu.</p>
+
+                        <ul class="features-list" style="list-style: none; padding: 0; margin-bottom: 30px;">
+                            <li style="margin-bottom: 15px;">
+                                <i class='bx bx-bar-chart-alt-2' style="color: #0067ff; font-size: 20px; margin-right: 10px;"></i>
+                                <strong>Trực quan hóa dữ liệu:</strong> Biểu đồ tăng trưởng, tỷ lệ hoàn thành mục tiêu theo thời gian thực.
+                            </li>
+                            <li style="margin-bottom: 15px;">
+                                <i class='bx bx-error-circle' style="color: #f12711; font-size: 20px; margin-right: 10px;"></i>
+                                <strong>Cảnh báo rủi ro:</strong> Tự động phát hiện và cảnh báo các chỉ số đang ở mức "Nguy cơ" (màu đỏ).
+                            </li>
+                            <li style="margin-bottom: 15px;">
+                                <i class='bx bx-target-lock' style="color: #0067ff; font-size: 20px; margin-right: 10px;"></i>
+                                <strong>Theo dõi đa chiều:</strong> Giám sát KPI theo Nhân viên, Phòng ban (Sales, Marketing, Support).
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. SECTION QUẢN LÝ HỢP ĐỒNG (Dựa trên hình ảnh Contract) -->
+    <section class="overview-area ptb-100 bg-f9f9f9">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="overview-content pl-50">
+                        <h2>Quản Lý Hợp Đồng Số Hóa</h2>
+                        <p>Lưu trữ và quản lý tập trung toàn bộ hợp đồng khách hàng. Loại bỏ nỗi lo thất lạc giấy tờ và quên hạn thanh toán.</p>
+
+                        <ul class="features-list" style="list-style: none; padding: 0; margin-bottom: 30px;">
+                            <li style="margin-bottom: 15px;">
+                                <i class='bx bx-check-double' style="color: #ff6b35; font-size: 20px; margin-right: 10px;"></i>
+                                <strong>Trạng thái rõ ràng:</strong> Phân loại Hợp đồng Nháp, Đang hoạt động, và Hết hạn.
+                            </li>
+                            <li style="margin-bottom: 15px;">
+                                <i class='bx bx-search-alt' style="color: #ff6b35; font-size: 20px; margin-right: 10px;"></i>
+                                <strong>Tra cứu thông minh:</strong> Tìm kiếm nhanh theo Số hợp đồng, Tên khách hàng hoặc Dịch vụ.
+                            </li>
+                            <li style="margin-bottom: 15px;">
+                                <i class='bx bx-calendar-exclamation' style="color: #ff6b35; font-size: 20px; margin-right: 10px;"></i>
+                                <strong>Nhắc lịch tự động:</strong> Hệ thống thông báo khi hợp đồng sắp hết hạn hoặc đến hạn thanh toán.
+                            </li>
+                        </ul>
+
+                        <a href="../lien-he/" class="btn-two">
+                            Xem Demo Quản Lý Hợp Đồng
+                            <i class='bx bx-right-arrow-alt'></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="overview-image">
+                        <!-- Hãy lưu hình ảnh Hợp đồng bạn gửi thành file contract.png -->
+                        <img src="../assets/img/tinhnangsale.png" alt="Giao diện Quản lý Hợp đồng">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. SECTION DỮ LIỆU KHÁCH HÀNG / LEAD (Dựa trên hình ảnh Lead) -->
+    <section class="overview-area ptb-100">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="overview-image">
+                        <!-- Hãy lưu hình ảnh Khách hàng bạn gửi thành file customer-data.png -->
+                        <img src="../assets/img/tinhnangCRM.png" alt="Giao diện Dữ liệu Khách hàng">
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="overview-content">
+                        <h2>Quản Lý Dữ Liệu Khách Hàng (CRM)</h2>
+                        <p>Xây dựng kho dữ liệu khách hàng doanh nghiệp (B2B) chuẩn xác. Hỗ trợ đội ngũ Sales tiếp cận đúng người, đúng thời điểm.</p>
+
+                        <ul class="features-list" style="list-style: none; padding: 0; margin-bottom: 30px;">
+                            <li style="margin-bottom: 15px;">
+                                <i class='bx bx-data' style="color: #0067ff; font-size: 20px; margin-right: 10px;"></i>
+                                <strong>Thông tin định danh:</strong> Quản lý chi tiết Tên công ty, Mã số thuế (MST), Số điện thoại, Địa chỉ.
+                            </li>
+                            <li style="margin-bottom: 15px;">
+                                <i class='bx bx-user-check' style="color: #0067ff; font-size: 20px; margin-right: 10px;"></i>
+                                <strong>Phân quyền phụ trách:</strong> Gán khách hàng cụ thể cho từng nhân viên kinh doanh chăm sóc.
+                            </li>
+                            <li style="margin-bottom: 15px;">
+                                <i class='bx bx-filter-alt' style="color: #0067ff; font-size: 20px; margin-right: 10px;"></i>
+                                <strong>Bộ lọc mạnh mẽ:</strong> Lọc dữ liệu theo Trạng thái hoạt động, Khu vực hoặc Người phụ trách.
+                            </li>
+                        </ul>
+
+                        <a href="../lien-he/" class="btn-one">
+                            Tư Vấn Giải Pháp CRM
+                            <i class='bx bx-right-arrow-alt'></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- Start Integration Area (Sử dụng layout Overview Area) -->
     <section class="overview-area ptb-100">
         <div class="container-fluid">
