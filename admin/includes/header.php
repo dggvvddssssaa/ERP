@@ -6,7 +6,7 @@ if (!isset($path)) $path = "/ERP/admin/";
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Volt - Premium Bootstrap 5 Dashboard</title>
+    <title>TruongthanhERP</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
 
     <!-- Favicon -->

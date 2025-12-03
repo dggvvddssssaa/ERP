@@ -1,5 +1,7 @@
 <?php
 // 1. KẾT NỐI DATABASE
+// LƯU Ý: Kiểm tra lại đường dẫn này cho đúng với cấu trúc thư mục của bạn
+// Nếu file này nằm trong thư mục 'news/', mà 'admin' nằm ngang hàng 'news' thì đường dẫn này đúng.
 require_once '../admin/config/db_connection.php';
 
 // 2. LẤY ID TỪ URL (Ví dụ: ?id=5)
@@ -19,10 +21,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         $date_post = strtotime($row['created_at']);
         $day = date('d', $date_post);
         $month = "Tháng " . date('m', $date_post);
-        $year = date('Y', $date_post);
         $full_date = date('d/m/Y', $date_post);
     } else {
-        // Nếu không tìm thấy bài viết thì quay về trang chủ hoặc báo lỗi
         die("Bài viết không tồn tại!");
     }
 } else {
@@ -30,8 +30,11 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 }
 
 // 4. LẤY BÀI VIẾT GẦN ĐÂY (CHO SIDEBAR)
-$recent_sql = "SELECT * FROM news WHERE id != $id ORDER BY created_at DESC LIMIT 3";
-$recent_news = $conn->query($recent_sql);
+// Dùng prepared statement để an toàn hơn
+$stmt_recent = $conn->prepare("SELECT * FROM news WHERE id != ? ORDER BY created_at DESC LIMIT 3");
+$stmt_recent->bind_param("i", $id);
+$stmt_recent->execute();
+$recent_news = $stmt_recent->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -40,6 +43,7 @@ $recent_news = $conn->query($recent_sql);
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Các file CSS có sẵn -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/animate.min.css">
     <link rel="stylesheet" href="../assets/css/boxicons.min.css">
@@ -55,6 +59,79 @@ $recent_news = $conn->query($recent_sql);
 
     <title><?php echo htmlspecialchars($row['title']); ?> - Trường Thành ERP</title>
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+
+    <!-- CSS TÙY CHỈNH CHO NỘI DUNG BÀI VIẾT (QUAN TRỌNG) -->
+    <style>
+        /* 1. Căn giữa và làm đẹp hình ảnh trong bài viết */
+        .content-display img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            /* Bo góc nhẹ */
+            margin-top: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            /* Đổ bóng nhẹ cho ảnh */
+        }
+
+        /* 2. Làm đẹp bảng (Table) giống giao diện Admin */
+        .content-display table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            margin-top: 1rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .content-display table td,
+        .content-display table th {
+            padding: 12px 15px;
+            border: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+
+        .content-display table th {
+            background-color: #f8f9fa;
+            font-weight: 700;
+            color: #212529;
+            text-align: center;
+        }
+
+        /* Style dòng chẵn lẻ cho bảng dễ đọc hơn */
+        .content-display table tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+
+        /* 3. Tinh chỉnh Typography */
+        .content-display h2,
+        .content-display h3,
+        .content-display h4 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .content-display p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+            font-size: 16px;
+            color: #4a4a4a;
+        }
+
+        .content-display ul,
+        .content-display ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .content-display li {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -62,7 +139,9 @@ $recent_news = $conn->query($recent_sql);
     <div class="preloader">
         <div class="spinner"></div>
     </div>
+
     <?php include("../includes/header.php") ?>
+
     <div class="page-title-area item-bg-3">
         <div class="d-table">
             <div class="d-table-cell">
@@ -81,16 +160,18 @@ $recent_news = $conn->query($recent_sql);
             </div>
         </div>
     </div>
+
     <section class="single-blog-area pt-100 pb-100">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-12">
                     <div class="blog-details-desc">
+                        <!-- Ảnh đại diện bài viết -->
                         <div class="article-image">
                             <?php if ($row['image']): ?>
-                                <img src="../assets/img/blog/<?php echo $row['image']; ?>" alt="<?php echo htmlspecialchars($row['title']); ?>" style="width:100%">
+                                <img src="../assets/img/blog/<?php echo $row['image']; ?>" alt="<?php echo htmlspecialchars($row['title']); ?>" style="width:100%" class="rounded">
                             <?php else: ?>
-                                <img src="../assets/img/blog-details/blog-details.jpg" alt="Default Image">
+                                <img src="../assets/img/blog-details/blog-details.jpg" alt="Default Image" class="rounded">
                             <?php endif; ?>
                         </div>
 
@@ -101,21 +182,20 @@ $recent_news = $conn->query($recent_sql);
                                     <li><?php echo $month; ?></li>
                                 </ul>
 
-                                <p class="fw-bold" style="font-style: italic;">
-                                    <?php echo nl2br(htmlspecialchars($row['summary'])); ?>
-                                </p>
+                                <!-- Phần mô tả ngắn (Sapo) -->
+                                <div class="alert alert-light border-start border-primary border-4 shadow-sm" role="alert">
+                                    <p class="fw-bold fst-italic mb-0 text-dark">
+                                        <?php echo nl2br(htmlspecialchars($row['summary'])); ?>
+                                    </p>
+                                </div>
                             </div>
 
-                            <div class="main-content mt-6">
-                                <?php
-                                // Hiển thị nội dung chi tiết. 
-                                // Nếu bạn lưu HTML trong DB thì dùng echo $row['content'];
-                                // Nếu lưu text thuần thì dùng echo nl2br($row['content']);
-                                echo $row['content'];
-                                ?>
+                            <!-- NỘI DUNG CHÍNH (Đã áp dụng class content-display để CSS hoạt động) -->
+                            <div class="main-content mt-4 content-display">
+                                <?php echo $row['content']; ?>
                             </div>
 
-                            <blockquote class="wp-block-quote">
+                            <blockquote class="wp-block-quote mt-5">
                                 <p>Giải pháp quản trị tối ưu là nền tảng vững chắc cho sự phát triển bền vững của doanh nghiệp.</p>
                                 <cite>- Trường Thành ERP</cite>
                             </blockquote>
@@ -148,6 +228,7 @@ $recent_news = $conn->query($recent_sql);
                     </div>
                 </div>
 
+                <!-- SIDEBAR -->
                 <div class="col-lg-4 col-md-12">
                     <aside class="widget-area" id="secondary">
 
@@ -184,6 +265,8 @@ $recent_news = $conn->query($recent_sql);
                                         </div>
                                     </article>
                                 <?php endwhile; ?>
+                            <?php else: ?>
+                                <p>Chưa có bài viết mới.</p>
                             <?php endif; ?>
                         </section>
 
@@ -193,6 +276,7 @@ $recent_news = $conn->query($recent_sql);
                                 <li><a href="#">Tin Tức</a></li>
                                 <li><a href="#">Kiến Thức Quản Trị</a></li>
                                 <li><a href="#">Giải Pháp ERP</a></li>
+                                <li><a href="#">Tài Chính</a></li>
                             </ul>
                         </section>
 
@@ -211,11 +295,14 @@ $recent_news = $conn->query($recent_sql);
             </div>
         </div>
     </section>
+
     <?php include("../includes/footer.php") ?>
+
     <div class="go-top">
         <i class="bx bx-chevron-up"></i>
         <i class="bx bx-chevron-up"></i>
     </div>
+
     <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/jquery.meanmenu.min.js"></script>

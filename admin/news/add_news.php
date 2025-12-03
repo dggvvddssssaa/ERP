@@ -139,6 +139,91 @@ $path = "../";
     <?php include '../includes/footer.php'; ?>
 </main>
 
+
+<!-- ... Phần PHP và HTML ở trên giữ nguyên ... -->
+
+<!-- 1. Thêm CSS để định dạng nội dung Bảng và Hình ảnh (Cho cả trang này và trang hiển thị tin tức) -->
+<style>
+    /* CSS này dùng để hiển thị đẹp trên trang web thực tế */
+    .ck-content-display table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+        border: 1px solid #e5e7eb;
+    }
+
+    .ck-content-display table td,
+    .ck-content-display table th {
+        padding: 10px;
+        border: 1px solid #e5e7eb;
+        vertical-align: middle;
+    }
+
+    .ck-content-display table th {
+        background-color: #f3f4f6;
+        font-weight: 600;
+    }
+
+    /* Căn giữa hình ảnh */
+    .ck-content-display img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+        /* Bo góc ảnh nhẹ cho đẹp */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        /* Đổ bóng nhẹ */
+    }
+</style>
+
+<!-- ... Phần include footer giữ nguyên ... -->
+<?php include '../includes/footer.php'; ?>
+</main>
+
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 <script>
-    CKEDITOR.replace('editor_content');
+    CKEDITOR.replace('editor_content', {
+        // 1. Tăng chiều cao của khung soạn thảo (đơn vị pixel)
+        height: 600,
+        versionCheck: false,
+        // 2. Cấu hình CSS bên trong khung soạn thảo để bạn nhìn thấy bảng/ảnh đẹp ngay lúc sửa
+        // Chúng ta nhúng CSS của Bootstrap và đoạn CSS tùy chỉnh vào trong iframe của CKEditor
+        contentsCss: [
+            'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css',
+            '../../css/volt.css', // Đường dẫn tới file css chính của bạn (nếu có)
+        ],
+
+        // Cho phép mọi thẻ HTML (tránh việc CKEditor tự xóa class của bảng)
+        allowedContent: true,
+
+        // Thêm một đoạn CSS trực tiếp vào trong lòng editor để căn giữa ảnh và kẻ bảng
+        on: {
+            instanceReady: function(evt) {
+                this.dataProcessor.htmlFilter.addRules({
+                    elements: {
+                        img: function(el) {
+                            // Tự động thêm style căn giữa cho ảnh khi xuất dữ liệu
+                            if (!el.attributes.style) el.attributes.style = "";
+                            // el.attributes.style += "display: block; margin: 0 auto; max-width: 100%;";
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+    // Inject CSS thủ công vào trong editor để Table và Image hiển thị đúng ý ngay lúc gõ
+    CKEDITOR.on('instanceReady', function(ev) {
+        var editor = ev.editor;
+        var css = `
+            body { font-family: 'Inter', sans-serif; padding: 20px; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; border: 1px solid #dee2e6; }
+            td, th { padding: 0.75rem; border: 1px solid #dee2e6; }
+            th { background-color: #f8f9fa; }
+            img { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+        `;
+        editor.document.appendStyleSheet("data:text/css;charset=utf-8," + encodeURIComponent(css));
+    });
 </script>
